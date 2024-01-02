@@ -9,9 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.18.1",
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
+    "@prisma/client": "^5.7.1",
+    "@tiptap/pm": "^2.1.13",
+    "@tiptap/react": "^2.1.13",
+    "@tiptap/starter-kit": "^2.1.13",
+    "antd": "^5.12.2",
+    "next": "14.0.4",
+    "prisma": "^5.7.1",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.0.4"
+    "sass": "^1.69.5",
+    "swr": "^2.2.4"
   },
   "devDependencies": {
     "typescript": "^5",

@@ -1,0 +1,33 @@
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full height of the viewport */
+  /* background: url("path-to-your-background-image.jpg") no-repeat center center; */
+  background-size: cover;
+}
+
+.navigation {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  /* Add your styles for the navigation bar */
+}
+
+.hero-content {
+  text-align: center;
+  color: white;
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  /* background-image: url("path-to-your-profile-image.jpg"); */
+  background-size: cover;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  /* Adjust the path to your profile image */
+}
+
+/* Add more styles as needed */
