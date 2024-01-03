@@ -37,7 +37,7 @@ export default function BlogPage() {
   } = useSWR("/api/blog", fetcher);
 
   if (error) return <div>failed to load</div>;
-  else if (isLoading) return <div>loading...</div>;
+  else if (isLoading) return <div>loading...</div>;1
   return (
     <Content style={{ padding: 25 }}>
       <Title level={2}>Blog</Title>
