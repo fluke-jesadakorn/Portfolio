@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/51f93aa1-506b-41b4-b469-66f57e99fa6a/resourceGroups/Private/providers/Microsoft.Web/sites/jesadakorn",
+    "appService.deploySubpath": "."
+}
