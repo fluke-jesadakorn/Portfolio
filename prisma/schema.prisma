@@ -11,15 +11,22 @@ datasource db {
 }
 
 model Private {
-  id    String @id @default(auto()) @db.ObjectId @map("_id")
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
   name  String
   email String @unique
 }
 
 model Blog {
-  id    String @id @default(auto()) @db.ObjectId @map("_id")
-  title  String @unique
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  title   String @unique
   content String
+}
+
+model Contact {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  email   String @unique
+  message String
 }
 
 // datasource db {

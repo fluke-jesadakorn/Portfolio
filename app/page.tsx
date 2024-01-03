@@ -13,7 +13,7 @@ import {
   Form,
   Input,
 } from "antd";
-import { serverActions } from "./action";
+import { serverActions } from "./IndexAction";
 
 const { Content } = Layout;
 const { Title, Text, Paragraph } = Typography;

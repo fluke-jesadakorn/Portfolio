@@ -47,7 +47,7 @@ export default function BlogPage() {
           {/* <Paragraph type="secondary">
             {post.date} | {post.categories.join(", ")}
           </Paragraph> */}
-          <Paragraph>{post.content}</Paragraph>
+          <Paragraph>{post.content.slice(0, 25)}</Paragraph>
         </Card>
       ))}
     </Content>
