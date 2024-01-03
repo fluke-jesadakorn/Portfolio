@@ -49,5 +49,5 @@ const RootLayout: NextPage<RootLayoutProps> = memo(({ children }) => {
     </html>
   );
 });
-
+RootLayout.displayName = "RootLayout";
 export default RootLayout;
