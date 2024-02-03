@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, memo } from "react";
+import React, { memo } from "react";
 import { Inter } from "next/font/google";
 import StyledComponentsRegistry from "../lib/AntdRegistry";
 // import "./globals.css";

@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -29,13 +30,58 @@ model Contact {
   message String
 }
 
-// datasource db {
-//   provider = "sqlite"
-//   url      = "file:./dev.db"
-// }
+model Account {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  type         String // e.g., Asset, Liability, Equity, Revenue, Expense
+  description  String?
+  transactions Transaction[]
+  subAccounts  SubAccount[]
+  balance      Float?
+}
 
-// model Private {
-//   id    Int    @id
-//   name  String
-//   email String @unique
-// }
+model AccountingPeriod {
+  id          String   @id @default(auto()) @db.ObjectId @map("_id")
+  startDate   DateTime
+  endDate     DateTime
+  status      String // For example: "Open", "Closed"
+  description String?
+
+  // Relationships
+  transactions Transaction[]
+}
+
+model Transaction {
+  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  date               DateTime
+  amount             Float
+  description        String?
+  accountId          String            @db.ObjectId
+  account            Account           @relation(fields: [accountId], references: [id])
+  AccountingPeriod   AccountingPeriod? @relation(fields: [accountingPeriodId], references: [id])
+  accountingPeriodId String?           @db.ObjectId
+}
+
+model SubAccount {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  mainAccountId String  @db.ObjectId
+  name          String
+  mainAccount   Account @relation(fields: [mainAccountId], references: [id])
+}
+
+model UserDepartment {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  // Other fields as necessary
+}
+
+model Vendor {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  address      String
+  contactInfo  String
+  taxId        String
+  paymentTerms String
+  accountId    String? @db.ObjectId
+  // Other fields as necessary
+}

@@ -1,3 +1,3 @@
-import CreatePage from "./CreatePage";
+import CreatePage from "./Components/CreatePage";
 
 export default CreatePage;
