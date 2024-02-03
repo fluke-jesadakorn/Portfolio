@@ -50,7 +50,7 @@ const StyledComponentsRegistry = ({ children }: React.PropsWithChildren) => {
 
   const items: MenuItem[] = [
     getItem(<Link href="/">Home</Link>, "1", <HomeOutlined />),
-    getItem(<Link href="/work">Works</Link>, "2", <HomeOutlined />),
+    getItem(<Link href="/works">Works</Link>, "2", <HomeOutlined />),
     getItem(<Link href="/blog">Blog</Link>, "3", <BookOutlined />),
     getItem(<Link href="/contact">Contact</Link>, "4", <UserOutlined />),
   ];
