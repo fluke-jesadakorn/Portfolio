@@ -1,0 +1,28 @@
+/* components/Navbar.module.css */
+.navbar {
+    background: #333;
+    color: #fff;
+    padding: 1rem;
+    /* rest of your navbar styles */
+}
+
+.navContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navLogo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    /* rest of your logo styles */
+}
+
+.navLinks a {
+    margin-left: 1rem;
+    text-decoration: none;
+    color: #fff;
+    /* rest of your link styles */
+}

@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { Inter } from "next/font/google";
-import StyledComponentsRegistry from "../lib/AntdRegistry";
+import StyledComponentsRegistry from "@/lib/privateLayout";
 // import "./globals.css";
 import "@/styles/globalStyles.scss";
 import Head from "next/head";

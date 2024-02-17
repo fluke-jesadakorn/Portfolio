@@ -75,13 +75,26 @@ model UserDepartment {
   // Other fields as necessary
 }
 
+// model Vendor {
+//   id           String  @id @default(auto()) @map("_id") @db.ObjectId
+//   name         String
+//   address      String
+//   contactInfo  String
+//   taxId        String
+//   paymentTerms String
+//   accountId    String? @db.ObjectId
+//   // Other fields as necessary
+// }
+
 model Vendor {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  address      String
-  contactInfo  String
-  taxId        String
-  paymentTerms String
-  accountId    String? @db.ObjectId
-  // Other fields as necessary
+  vendorId    String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  address     String?
+  createdDate DateTime @default(now())
+  tel         String?
+  juristicId  String?
+  taxId       String?
+  contactAddr String?
+  telContactAddr String?
+  staffId     Int
 }

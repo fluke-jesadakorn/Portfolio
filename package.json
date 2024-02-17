@@ -9,7 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate": "prisma generate"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.18.1",
@@ -20,10 +21,11 @@
     "@tiptap/react": "^2.1.13",
     "@tiptap/starter-kit": "^2.1.13",
     "antd": "^5.12.2",
-    "next": "14.0.4",
+    "axios": "^1.6.7",
+    "next": "14.1.0",
     "prisma": "^5.7.1",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "sass": "^1.69.5",
     "swr": "^2.2.4"
   },
