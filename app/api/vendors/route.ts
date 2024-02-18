@@ -1,17 +1,45 @@
-import { PrismaClient } from "@prisma/client";
 import { type NextRequest, NextResponse } from "next/server";
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
-export async function GET(
-  req: NextRequest,
-  // { params: { page, pageSize } }: { params: { page: string; pageSize: string } }
-) {
-  let page = req.nextUrl.searchParams.get("page") || 1;
-  let pageSize = req.nextUrl.searchParams.get("pageSize") || 10;
+export async function GET(req: NextRequest) {
+  // let page = req.nextUrl.searchParams.get("page") || 1;
+  // let pageSize = req.nextUrl.searchParams.get("pageSize") || 10;
+  // const skip = (+page - 1) * +pageSize;
+
+  // const [records, total] = await Promise.all([
+  //   prisma.vendor.findMany({
+  //     skip: skip,
+  //     take: +pageSize,
+  //     orderBy: {
+  //       createdDate: "desc", // or any other field you want to sort by
+  //     },
+  //   }),
+  //   prisma.vendor.count(),
+  // ]);
+  const page = req.nextUrl.searchParams.get("page") as string;
+  const pageSize = req.nextUrl.searchParams.get("pageSize") as string;
+  const query = req.nextUrl.searchParams.get("query") as string;
   const skip = (+page - 1) * +pageSize;
 
   const [records, total] = await Promise.all([
     prisma.vendor.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: query,
+              mode: "insensitive", // Case-insensitive
+            },
+          },
+          // {
+          //   address: {
+          //     contains: query,
+          //     mode: "insensitive",
+          //   },
+          // },
+          // Add other fields you want to include in the search
+        ],
+      },
       skip: skip,
       take: +pageSize,
       orderBy: {
@@ -20,6 +48,8 @@ export async function GET(
     }),
     prisma.vendor.count(),
   ]);
+
+  // console.log(record);
   return NextResponse.json({ records, total });
 }
 
@@ -50,7 +80,6 @@ export async function POST(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  // Update an existing vendor
   const { vendorId, ...data } = await req.json();
   const updatedVendor = await prisma.vendor.update({
     where: { vendorId: vendorId },
@@ -61,7 +90,6 @@ export async function PUT(req: Request) {
 
 export async function DELETE(req: NextRequest) {
   const vendorId = req.nextUrl.searchParams.get("vendorId") as string;
-
   await prisma.vendor.delete({
     where: { vendorId },
   });

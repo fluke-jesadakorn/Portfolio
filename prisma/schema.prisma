@@ -96,5 +96,5 @@ model Vendor {
   taxId       String?
   contactAddr String?
   telContactAddr String?
-  staffId     Int
+  staffId     String?
 }

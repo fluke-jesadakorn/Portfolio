@@ -1,14 +1,29 @@
-'use client'
-import { useEffect, useState } from "react";
-import { Table, Button, Modal, Form, Input, message, Space, InputNumber, type TablePaginationConfig } from "antd";
+"use client";
+import React, { useEffect, useState } from "react";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  Space,
+  DatePicker,
+} from "antd";
 import axios from "axios";
-import { ColumnsType } from "antd/es/table";
+import { SearchOutlined } from "@ant-design/icons";
+import { ColumnsType, TablePaginationConfig } from "antd/es/table";
+import moment from "moment";
+moment.locale("en");
 
-// Define types for your vendor and pagination
 interface Vendor {
-  vendorId: number;
+  key: React.Key;
+  vendorId: string;
   name: string;
-  // include other vendor properties as needed
+  address?: string;
+  tel?: string;
+  staffId?: string;
+  createdDate?: moment.Moment;
 }
 
 interface Pagination {
@@ -27,27 +42,44 @@ const VendorsPage: React.FC = () => {
     total: 0,
   });
   const [form] = Form.useForm();
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    fetchVendors(pagination.current, pagination.pageSize);
-  }, []);
+    fetchVendors(pagination.current, pagination.pageSize, searchQuery);
+  }, [pagination.current, pagination.pageSize, searchQuery]);
 
   const fetchVendors = async (
-    page: number = pagination.current,
-    pageSize: number = pagination.pageSize
+    page: number = 1,
+    pageSize: number = 5,
+    query: string = ""
   ) => {
-    const response = await axios.get(`/api/vendors?page=${page}&pageSize=${pageSize}`);
-    setVendors(response.data.records);
-    setPagination({
-      ...pagination,
-      current: page,
-      pageSize: pageSize,
-      total: response.data.total,
-    });
+    try {
+      const response = await axios.get(`/api/vendors`, {
+        params: {
+          page,
+          pageSize,
+          query,
+        },
+      });
+      console.log(response.data);
+      setVendors(
+        response.data.records.map((vendor: Vendor) => ({
+          ...vendor,
+          key: vendor.vendorId,
+        }))
+      );
+      setPagination((prev) => ({ ...prev, total: response.data.total }));
+    } catch (error) {
+      message.error("Failed to fetch vendors");
+    }
   };
 
   const handleTableChange = (newPagination: TablePaginationConfig) => {
-    fetchVendors(newPagination.current!, newPagination.pageSize!);
+    setPagination((prev) => ({
+      ...prev,
+      current: newPagination.current || prev.current,
+      pageSize: newPagination.pageSize || prev.pageSize,
+    }));
   };
 
   const showCreateModal = () => {
@@ -58,14 +90,18 @@ const VendorsPage: React.FC = () => {
 
   const showUpdateModal = (vendor: Vendor) => {
     setCurrentVendor(vendor);
-    form.setFieldsValue(vendor);
+    form.setFieldsValue({
+      ...vendor,
+      createdDate: vendor.createdDate ? moment(vendor.createdDate) : null,
+    });
     setIsModalVisible(true);
   };
 
-  const showDeleteConfirm = (vendorId: number) => {
+  const showDeleteConfirm = (vendorId: string) => {
     Modal.confirm({
       title: "Are you sure you want to delete this vendor?",
-      content: "This action cannot be undone and will permanently delete the vendor data.",
+      content:
+        "This action cannot be undone and will permanently delete the vendor data.",
       okText: "Yes, delete it",
       okType: "danger",
       cancelText: "No, cancel",
@@ -73,11 +109,11 @@ const VendorsPage: React.FC = () => {
     });
   };
 
-  const handleDelete = async (vendorId: number) => {
+  const handleDelete = async (vendorId: string) => {
     try {
       await axios.delete(`/api/vendors?vendorId=${vendorId}`);
       message.success("Vendor deleted successfully");
-      fetchVendors(pagination.current, pagination.pageSize);
+      fetchVendors(pagination.current, pagination.pageSize, searchQuery);
     } catch (error) {
       message.error("Failed to delete vendor");
     }
@@ -87,37 +123,50 @@ const VendorsPage: React.FC = () => {
     try {
       const values = await form.validateFields();
       if (currentVendor) {
-        await axios.put("/api/vendors", {
-          vendorId: currentVendor.vendorId,
+        await axios.put(`/api/vendors/${currentVendor.vendorId}`, {
           ...values,
+          createdDate: values.createdDate ? values.createdDate.format() : null,
         });
         message.success("Vendor updated successfully");
       } else {
-        await axios.post("/api/vendors", values);
+        await axios.post("/api/vendors", {
+          ...values,
+          createdDate: values.createdDate ? values.createdDate.format() : null,
+        });
         message.success("Vendor created successfully");
       }
       setIsModalVisible(false);
-      fetchVendors(pagination.current, pagination.pageSize);
+      fetchVendors(pagination.current, pagination.pageSize, searchQuery);
     } catch (error) {
       message.error("Failed to submit vendor");
     }
   };
 
-  // Define column types
   const columns: ColumnsType<Vendor> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
     },
-    // ... other columns
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Telephone",
+      dataIndex: "tel",
+      key: "tel",
+    },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space>
           <Button onClick={() => showUpdateModal(record)}>Edit</Button>
-          <Button danger onClick={() => showDeleteConfirm(record.vendorId)}>Delete</Button>
+          <Button danger onClick={() => showDeleteConfirm(record.vendorId)}>
+            Delete
+          </Button>
         </Space>
       ),
     },
@@ -125,7 +174,25 @@ const VendorsPage: React.FC = () => {
 
   return (
     <div>
-      <Button type="primary" onClick={showCreateModal}>
+      <Space style={{ marginBottom: 16 }}>
+        <Input
+          placeholder="Search vendors..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onPressEnter={() => fetchVendors(1, pagination.pageSize, searchQuery)}
+        />
+        <Button
+          onClick={() => fetchVendors(1, pagination.pageSize, searchQuery)}
+          icon={<SearchOutlined />}
+        >
+          Search
+        </Button>
+      </Space>
+      <Button
+        type="primary"
+        onClick={showCreateModal}
+        style={{ marginBottom: 16 }}
+      >
         Create Vendor
       </Button>
       <Table
@@ -141,7 +208,7 @@ const VendorsPage: React.FC = () => {
       />
       <Modal
         title={currentVendor ? "Edit Vendor" : "Create Vendor"}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={() => setIsModalVisible(false)}
       >
@@ -154,7 +221,13 @@ const VendorsPage: React.FC = () => {
             label="Staff ID"
             rules={[{ required: true }]}
           >
-            <InputNumber />
+            <Input />
+          </Form.Item>
+          <Form.Item name="address" label="Address">
+            <Input />
+          </Form.Item>
+          <Form.Item name="tel" label="Telephone">
+            <Input />
           </Form.Item>
         </Form>
       </Modal>

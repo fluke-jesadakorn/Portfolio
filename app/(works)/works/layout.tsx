@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { ReactElement, memo } from "react";
 import { Inter } from "next/font/google";
 import StyledComponentsRegistry from "@/lib/worksLayout";
 // import "./globals.css";
@@ -7,11 +7,6 @@ import Head from "next/head";
 import { NextPage } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
-
-export const metadata = {
-  title: "Jesadakorn Kirtnu",
-  description: "My resume and portfolio website.",
-};
 
 type RootLayoutProps = {
   children: React.ReactNode;
