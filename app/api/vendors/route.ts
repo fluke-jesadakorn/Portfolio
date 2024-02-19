@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
   // ]);
   const page = req.nextUrl.searchParams.get("page") as string;
   const pageSize = req.nextUrl.searchParams.get("pageSize") as string;
-  const query = req.nextUrl.searchParams.get("query") as string;
+  const query = req.nextUrl.searchParams.get("query") as string || "";
   const skip = (+page - 1) * +pageSize;
 
   const [records, total] = await Promise.all([
@@ -31,12 +31,18 @@ export async function GET(req: NextRequest) {
               mode: "insensitive", // Case-insensitive
             },
           },
-          // {
-          //   address: {
-          //     contains: query,
-          //     mode: "insensitive",
-          //   },
-          // },
+          {
+            address: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            tel: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
           // Add other fields you want to include in the search
         ],
       },

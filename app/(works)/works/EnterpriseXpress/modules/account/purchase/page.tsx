@@ -14,6 +14,7 @@ import axios from "axios";
 import { SearchOutlined } from "@ant-design/icons";
 import { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import moment from "moment";
+import Highlighter from "react-highlight-words";
 moment.locale("en");
 
 interface Vendor {
@@ -147,16 +148,40 @@ const VendorsPage: React.FC = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      render: (text: string) => (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchQuery]}
+          autoEscape={true}
+          textToHighlight={text.toString()}
+        />
+      ),
     },
     {
       title: "Address",
       dataIndex: "address",
       key: "address",
+      render: (text: string) => (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchQuery]}
+          autoEscape={true}
+          textToHighlight={text.toString()}
+        />
+      ),
     },
     {
       title: "Telephone",
       dataIndex: "tel",
       key: "tel",
+      render: (text: string) => (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchQuery]}
+          autoEscape={true}
+          textToHighlight={text.toString()}
+        />
+      ),
     },
     {
       title: "Action",
