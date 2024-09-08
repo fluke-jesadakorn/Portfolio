@@ -58,7 +58,7 @@ const StyledComponentsRegistry = ({ children }: React.PropsWithChildren) => {
   return (
     <StyleProvider cache={cache}>
       <Layout className="layout">
-        <Header style={{ zIndex: 1, width: "100%" }}>
+        {/* <Header style={{ zIndex: 1, width: "100%" }}>
           <div className="logo" />
           <Menu
             theme="dark"
@@ -66,7 +66,7 @@ const StyledComponentsRegistry = ({ children }: React.PropsWithChildren) => {
             mode="horizontal"
             defaultSelectedKeys={["1"]}
           ></Menu>
-        </Header>
+        </Header> */}
         <div style={{ minHeight: "82vh" }}>{children}</div>
         <Footer
           style={{
